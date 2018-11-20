@@ -114,7 +114,7 @@ class APIManager(context: Context) {
         /**
          * Generated keys from https://apps.twitter.com/
          */
-        const val CONSUMER_KEY = "fu82oNOEcg5Q9v2PsNTCXHQTm"
-        const val CONSUMER_SECRET = "mWy2WN3etMLTkp0ifNuhuFH9UqHkadxSJWRhsA3CgVCVExlP9L"
+        const val CONSUMER_KEY = "xxxxxx"
+        const val CONSUMER_SECRET = "xxxxxxx"
     }
 }
