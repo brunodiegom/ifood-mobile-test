@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">TweetAnalyzer</string>
+    <string name="app_name">Tweet Analyzer</string>
+    <string name="user_name">User name</string>
+    <string name="search">Search</string>
+
+    <string name="activity_transition">activity_transition</string>
 </resources>

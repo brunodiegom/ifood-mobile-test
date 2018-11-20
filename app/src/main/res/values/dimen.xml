@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="photo_size">48dp</dimen>
+    <dimen name="small_padding">8dp</dimen>
+    <dimen name="large_padding">16dp</dimen>
+    <dimen name="input_padding">56dp</dimen>
+    <dimen name="button_size">56dp</dimen>
+    <dimen name="clickable_item">48dp</dimen>
+    <dimen name="progressbar_size">70dp</dimen>
+
+    <dimen name="title">18sp</dimen>
+    <dimen name="splash_text">30sp</dimen>
+</resources>

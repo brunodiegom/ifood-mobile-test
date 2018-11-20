@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="timelineViewModel"
+            type="com.brunodiegom.tweetanalyzer.viewmodel.TimelineViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/username_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/small_padding"
+            android:hint="@string/user_name"
+            android:inputType="textNoSuggestions"
+            android:singleLine="true"
+            android:text="@{timelineViewModel.user.screenName}"
+            app:layout_constraintEnd_toStartOf="@id/search_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="Autofill" />
+
+        <ImageButton
+            android:id="@+id/search_button"
+            android:layout_width="@dimen/button_size"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/small_padding"
+            android:backgroundTint="@color/colorPrimary"
+            android:gravity="center"
+            android:src="@drawable/ic_search"
+            android:textColor="@android:color/white"
+            android:transitionName="@string/activity_transition"
+            app:layout_constraintBottom_toBottomOf="@id/username_input"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/username_input"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/user_photo"
+            android:layout_width="@dimen/photo_size"
+            android:layout_height="@dimen/photo_size"
+            android:layout_margin="@dimen/small_padding"
+            android:scaleType="fitCenter"
+            app:imageUrl="@{timelineViewModel.user.photoUrl}"
+            app:layout_constraintBottom_toTopOf="@id/tweet_list"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/username_input"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_padding"
+            android:text="@{timelineViewModel.user.name}"
+            android:textSize="@dimen/title"
+            app:layout_constraintBottom_toTopOf="@id/screen_name"
+            app:layout_constraintStart_toEndOf="@id/user_photo"
+            app:layout_constraintTop_toTopOf="@id/user_photo"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="9GAG" />
+
+        <TextView
+            android:id="@+id/screen_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{timelineViewModel.user.screenName}"
+            app:layout_constraintBottom_toBottomOf="@id/user_photo"
+            app:layout_constraintStart_toStartOf="@id/name"
+            app:layout_constraintTop_toBottomOf="@id/name"
+            tools:text="\@9gag" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tweet_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:items="@{timelineViewModel.tweets}"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_photo" />
+
+        <ProgressBar
+            android:layout_width="@dimen/progressbar_size"
+            android:layout_height="@dimen/progressbar_size"
+            android:visibility="@{timelineViewModel.loadingVisibility ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tweet_list" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
