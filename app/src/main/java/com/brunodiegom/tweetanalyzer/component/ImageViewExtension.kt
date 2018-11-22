@@ -11,3 +11,11 @@ import com.squareup.picasso.Picasso
 fun ImageView.setImageUrl(url: String?) {
     Picasso.with(context).load(url).into(this)
 }
+
+/**
+ * Binder adapter used on [ImageView] to bind drawable resource on.
+ */
+@BindingAdapter("android:src")
+fun ImageView.setDrawable(resource: Int) {
+    this.setImageResource(resource)
+}

@@ -7,14 +7,14 @@ import android.util.Log
 import com.brunodiegom.tweetanalyzer.component.Logger
 import com.brunodiegom.tweetanalyzer.model.Tweet
 import com.brunodiegom.tweetanalyzer.model.User
-import com.brunodiegom.tweetanalyzer.service.APIManager
+import com.brunodiegom.tweetanalyzer.service.TwitterAPIClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
 
-class TimelineViewModel(val apiManager: APIManager) {
+class TimelineViewModel(private val twitterAPIClient: TwitterAPIClient) {
 
     private var screenName: String = ""
 
@@ -36,14 +36,14 @@ class TimelineViewModel(val apiManager: APIManager) {
      * Request for user data.
      */
     private fun getUser() {
-        apiManager.twitterApi.getUser(screenName).enqueue(userCallback)
+        twitterAPIClient.getUser(screenName).enqueue(userCallback)
     }
 
     /**
      * Request for Timeline.
      */
     private fun getTimeline() {
-        apiManager.twitterApi.getTimeline(screenName, 30).enqueue(timelineCallback)
+        twitterAPIClient.getTimeline(screenName, 30).enqueue(timelineCallback)
     }
 
     /**

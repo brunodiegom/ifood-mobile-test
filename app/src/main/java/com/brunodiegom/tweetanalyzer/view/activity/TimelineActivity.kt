@@ -7,7 +7,8 @@ import android.util.Log
 import com.brunodiegom.tweetanalyzer.R
 import com.brunodiegom.tweetanalyzer.component.Logger
 import com.brunodiegom.tweetanalyzer.databinding.ActivityTimelineBinding
-import com.brunodiegom.tweetanalyzer.service.APIManager
+import com.brunodiegom.tweetanalyzer.service.GoogleAPIManager
+import com.brunodiegom.tweetanalyzer.service.TwitterAPIManager
 import com.brunodiegom.tweetanalyzer.view.adapter.TweetAdapter
 import com.brunodiegom.tweetanalyzer.viewmodel.TimelineViewModel
 import org.koin.android.ext.android.inject
@@ -27,9 +28,10 @@ class TimelineActivity : AppCompatActivity() {
      */
     private var screenName: String = ""
     /**
-     * Injection of [APIManager].
+     * Injection of [TwitterAPIManager].
      */
-    private val apiManager: APIManager by inject()
+    private val twitterAPIManager: TwitterAPIManager by inject()
+    private val googleAPIManager: GoogleAPIManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +41,7 @@ class TimelineActivity : AppCompatActivity() {
         Log.d(TAG, "Screen Name: $screenName")
 
         binding.timelineViewModel = getViewModel()
-        binding.tweetList.adapter = TweetAdapter(emptyList())
+        binding.tweetList.adapter = TweetAdapter(emptyList(), googleAPIManager.api)
     }
 
     /**
@@ -47,7 +49,7 @@ class TimelineActivity : AppCompatActivity() {
      *
      * @return instance of [TimelineViewModel]
      */
-    private fun getViewModel() = TimelineViewModel(apiManager).apply { this.load(screenName) }
+    private fun getViewModel() = TimelineViewModel(twitterAPIManager.api).apply { this.load(screenName) }
 
     companion object {
         private val TAG = Logger.tag

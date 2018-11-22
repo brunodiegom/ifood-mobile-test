@@ -1,4 +1,4 @@
-package com.brunodiegom.tweetanalyzer.service
+package com.brunodiegom.tweetanalyzer.model
 
 import com.google.gson.annotations.SerializedName
 

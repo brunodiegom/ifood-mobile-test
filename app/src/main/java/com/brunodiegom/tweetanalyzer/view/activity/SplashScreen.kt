@@ -4,18 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.brunodiegom.tweetanalyzer.R
-import com.brunodiegom.tweetanalyzer.service.APIManager
+import com.brunodiegom.tweetanalyzer.service.TwitterAPIManager
 import org.koin.android.ext.android.inject
 
 /**
- * Loading screen shown until [APIManager] initialization.
+ * Loading screen shown until initialization.
  */
-class SplashScreen : AppCompatActivity(), APIManager.InitializeListener {
+class SplashScreen : AppCompatActivity(), TwitterAPIManager.InitializeListener {
 
     /**
-     * Injection of [APIManager].
+     * Injection of [TwitterAPIManager].
      */
-    private val apiManager: APIManager by inject()
+    private val apiManager: TwitterAPIManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

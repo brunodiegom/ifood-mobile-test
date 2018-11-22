@@ -3,6 +3,7 @@ package com.brunodiegom.tweetanalyzer.service
 import android.content.Context
 import android.util.Log
 import com.brunodiegom.tweetanalyzer.component.Logger
+import com.brunodiegom.tweetanalyzer.model.OAuthToken
 import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -14,15 +15,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * Manager class responsible to control api access.
  */
-class APIManager(context: Context) {
+class TwitterAPIManager(val context: Context) {
 
     /**
-     * Instance of [APIClient] used to request data.
+     * Instance of [TwitterAPIClient] used to request data.
      */
-    var twitterApi: APIClient = createTwitterApi()
+    val api: TwitterAPIClient = createTwitterApi()
 
     /**
-     * Controls [APIClient] initialization.
+     * Controls [TwitterAPIClient] initialization.
      */
     var isInitialized = false
 
@@ -36,7 +37,7 @@ class APIManager(context: Context) {
     private val credentials = Credentials.basic(CONSUMER_KEY, CONSUMER_SECRET)
 
     /**
-     * Notifies [APIManager] initialization.
+     * Notifies [TwitterAPIManager] initialization.
      */
     var listener: InitializeListener? = null
 
@@ -67,15 +68,13 @@ class APIManager(context: Context) {
     }
 
     /**
-     * Creates instance of [APIClient].
+     * Creates instance of [TwitterAPIClient].
      *
-     * @return [APIClient] authenticated.
+     * @return [TwitterAPIClient] authenticated.
      */
-    private fun createTwitterApi(): APIClient {
+    private fun createTwitterApi(): TwitterAPIClient {
         val okHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val originalRequest = chain.request()
-
-            Log.d(TAG, "Valid token: ${token?.authorization}")
 
             val builder = originalRequest.newBuilder().header(
                 "Authorization",
@@ -87,19 +86,19 @@ class APIManager(context: Context) {
         }.build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(APIClient.BASE_URL)
+            .baseUrl(TwitterAPIClient.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        return retrofit.create(APIClient::class.java)
+        return retrofit.create(TwitterAPIClient::class.java)
     }
 
     /**
      * Request for Authentication token
      */
     private fun getToken() {
-        twitterApi.postCredentials("client_credentials").enqueue(tokenCallback)
+        api.postCredentials("client_credentials").enqueue(tokenCallback)
     }
 
     /**
@@ -114,7 +113,7 @@ class APIManager(context: Context) {
         /**
          * Generated keys from https://apps.twitter.com/
          */
-        const val CONSUMER_KEY = "xxxxxx"
-        const val CONSUMER_SECRET = "xxxxxxx"
+        const val CONSUMER_KEY = ""
+        const val CONSUMER_SECRET = ""
     }
 }

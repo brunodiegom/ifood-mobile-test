@@ -1,5 +1,6 @@
 package com.brunodiegom.tweetanalyzer.service
 
+import com.brunodiegom.tweetanalyzer.model.OAuthToken
 import com.brunodiegom.tweetanalyzer.model.Tweet
 import com.brunodiegom.tweetanalyzer.model.User
 import retrofit2.Call
@@ -8,7 +9,7 @@ import retrofit2.http.*
 /**
  * Retrofit service to get Twitter data.
  */
-interface APIClient {
+interface TwitterAPIClient {
 
     @FormUrlEncoded
     @POST("oauth2/token")

@@ -1,4 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.brunodiegom.tweetanalyzer.view.activity.TimelineActivity">
 
@@ -9,12 +10,34 @@
             type="com.brunodiegom.tweetanalyzer.model.Tweet" />
     </data>
 
-    <TextView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:minHeight="@dimen/clickable_item"
-        android:padding="@dimen/small_padding"
-        android:text="@{tweet.text}"
-        tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et ma" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tweet_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/clickable_item"
+            android:padding="@dimen/small_padding"
+            android:text="@{tweet.text}"
+            app:layout_constraintEnd_toStartOf="@id/tweet_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et ma" />
+
+        <ImageView
+            android:id="@+id/tweet_icon"
+            android:layout_width="@dimen/photo_size"
+            android:layout_height="@dimen/photo_size"
+            android:padding="@dimen/small_padding"
+            android:scaleType="centerInside"
+            android:src="@{tweet.sentimentIcon}"
+            app:layout_constraintBottom_toBottomOf="@id/tweet_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tweet_text"
+            tools:src="@drawable/thinking" />
+
+    </android.support.constraint.ConstraintLayout>
 </layout>
