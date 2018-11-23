@@ -1,5 +1,6 @@
 package com.brunodiegom.tweetanalyzer.view.adapter
 
+import android.animation.ArgbEvaluator
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,11 @@ import com.brunodiegom.tweetanalyzer.service.GoogleAPIClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.view.animation.Animation
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
+import android.graphics.Color
+
 
 /**
  * Tweet adapter is responsible to show tweet itself.
@@ -80,14 +86,37 @@ class TweetAdapter(private var tweets: List<Tweet>, private val googleApi: Googl
             val score = sentiment.documentSentiment?.score
             Log.d(TAG, "Score: $score")
             when {
-                score == null -> tweets[adapterPosition].sentimentIcon = 0
-                score > 0.25 -> tweets[adapterPosition].sentimentIcon = R.drawable.happy
-                score > -0.25 -> tweets[adapterPosition].sentimentIcon = R.drawable.neutral
-                else -> tweets[adapterPosition].sentimentIcon = R.drawable.sad
+                score == null -> {
+                    tweets[adapterPosition].sentimentIcon = 0
+                    blinkEffect(Color.WHITE)
+                }
+                score > 0.25 -> {
+                    tweets[adapterPosition].sentimentIcon = R.drawable.happy
+                    blinkEffect(Color.YELLOW)
+                }
+                score > -0.25 -> {
+                    tweets[adapterPosition].sentimentIcon = R.drawable.neutral
+                    blinkEffect(Color.LTGRAY)
+                }
+                else -> {
+                    tweets[adapterPosition].sentimentIcon = R.drawable.sad
+                    blinkEffect(Color.BLUE)
+                }
             }
             binding.tweet = tweets[adapterPosition]
             binding.progressBar.visibility = View.GONE
             binding.executePendingBindings()
+        }
+
+        private fun blinkEffect(color: Int) {
+            val anim = ObjectAnimator.ofInt(
+                binding.itemBackground, "backgroundColor", Color.WHITE, color, Color.WHITE
+            )
+            anim.duration = 1000
+            anim.setEvaluator(ArgbEvaluator())
+            anim.repeatMode = ValueAnimator.REVERSE
+            anim.repeatCount = 4
+            anim.start()
         }
     }
 
