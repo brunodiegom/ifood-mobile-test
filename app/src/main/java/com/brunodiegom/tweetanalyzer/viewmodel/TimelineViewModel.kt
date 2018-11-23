@@ -4,10 +4,12 @@ import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.util.Log
+import com.brunodiegom.tweetanalyzer.R
 import com.brunodiegom.tweetanalyzer.component.Logger
 import com.brunodiegom.tweetanalyzer.model.Tweet
 import com.brunodiegom.tweetanalyzer.model.User
 import com.brunodiegom.tweetanalyzer.service.TwitterAPIClient
+import kotlinx.android.synthetic.main.activity_splash_screen.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,15 +24,16 @@ class TimelineViewModel(private val twitterAPIClient: TwitterAPIClient) {
 
     val tweets = ObservableArrayList<Tweet>()
 
+    val errorMessage = ObservableField<Int>()
+
     val loadingVisibility = ObservableBoolean(false)
 
     fun load(screenName: String) {
+        Log.d(TAG, "Loading: $screenName")
         loadingVisibility.set(true)
         this.screenName = screenName
         getUser()
-        getTimeline()
     }
-
 
     /**
      * Request for user data.
@@ -54,14 +57,19 @@ class TimelineViewModel(private val twitterAPIClient: TwitterAPIClient) {
             Log.d(TAG, "userCallback - onResponse: ${response.isSuccessful}")
             if (response.isSuccessful) {
                 user.set(response.body())
+                getTimeline()
             } else {
+                errorMessage.set(R.string.user_not_found)
                 Log.d(TAG, "Code: " + response.code() + " Message: " + response.message())
+                loadingVisibility.set(false)
             }
         }
 
         override fun onFailure(call: Call<User>, t: Throwable) {
             Log.d(TAG, "userCallback - onFailure")
+            errorMessage.set(R.string.error_connecting_server)
             t.printStackTrace()
+            loadingVisibility.set(false)
         }
     }
 
@@ -74,10 +82,15 @@ class TimelineViewModel(private val twitterAPIClient: TwitterAPIClient) {
             if (response.isSuccessful) {
                 tweets.clear()
                 val iterator = response.body()?.iterator()
-                while (iterator?.hasNext() == true) {
-                    tweets.add(iterator.next())
+                if (iterator?.hasNext() == true) {
+                    while (iterator.hasNext()) {
+                        tweets.add(iterator.next())
+                    }
+                } else {
+                    errorMessage.set(R.string.no_tweet_posted)
                 }
             } else {
+                errorMessage.set(R.string.tweets_not_found)
                 Log.d(TAG, "Code: " + response.code() + " Message: " + response.message())
             }
             loadingVisibility.set(false)
@@ -86,6 +99,7 @@ class TimelineViewModel(private val twitterAPIClient: TwitterAPIClient) {
         override fun onFailure(call: Call<ArrayList<Tweet>>, t: Throwable) {
             Log.d(TAG, "timelineCallback - onFailure")
             t.printStackTrace()
+            errorMessage.set(R.string.error_connecting_server)
             loadingVisibility.set(false)
         }
     }

@@ -7,6 +7,7 @@ import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.brunodiegom.tweetanalyzer.R
+import com.brunodiegom.tweetanalyzer.component.formatUsername
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -19,13 +20,27 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
+    override fun onResume() {
+        super.onResume()
+        resetErrorMessage()
+    }
+
     /**
      * Starts [TimelineActivity] sending the screen name to be used on search.
      *
      * @param view anchor xml view.
      */
     fun searchUser(view: View) {
-        val name = formatUsername(username_input.text.toString())
+        val name = username_input.text.toString().formatUsername()
+
+        if (name.isNotEmpty()) {
+            startTimeline(name)
+        } else {
+            username_input_layout.error = getString(R.string.insert_valid_username)
+        }
+    }
+
+    private fun startTimeline(name: String) {
         val intent = Intent(this, TimelineActivity::class.java)
         intent.apply {
             putExtra(TimelineActivity.SCREEN_NAME, name)
@@ -36,13 +51,10 @@ class MainActivity : AppCompatActivity() {
             ViewCompat.getTransitionName(search_button) ?: ""
         )
         startActivity(intent, options.toBundle())
+        resetErrorMessage()
     }
 
-    /**
-     * Format input screen name removing unnecessary whitespaces and at.
-     *
-     * @param value raw text from input.
-     * @return formatted screen name.
-     */
-    private fun formatUsername(value: String) = value.replace("@", "").trim()
+    private fun resetErrorMessage() {
+        username_input_layout.error = ""
+    }
 }

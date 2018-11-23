@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Tweet Analyzer</string>
-    <string name="user_name">User name</string>
+    <string name="username">Username</string>
     <string name="search">Search</string>
+    <string name="error_connecting_server">Error connecting to server.\nVerify your internet connection.</string>
+    <string name="retry">Retry</string>
+    <string name="insert_valid_username">Insert valid username.</string>
+    <string name="user_not_found">User not found</string>
+    <string name="no_tweet_posted">No tweet posted</string>
+    <string name="tweets_not_found">Tweets not found</string>
 
     <string name="activity_transition">activity_transition</string>
 </resources>

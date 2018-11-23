@@ -16,20 +16,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/username_input"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/username_input_layout_tl"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_padding"
             android:layout_marginEnd="@dimen/small_padding"
-            android:hint="@string/user_name"
-            android:inputType="textNoSuggestions"
-            android:singleLine="true"
-            android:text="@{timelineViewModel.user.screenName}"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toStartOf="@id/search_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="Autofill" />
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <EditText
+                android:id="@+id/username_input_tl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username"
+                android:inputType="textNoSuggestions"
+                android:singleLine="true"
+                tools:ignore="Autofill" />
+        </android.support.design.widget.TextInputLayout>
 
         <ImageButton
             android:id="@+id/search_button"
@@ -40,10 +47,10 @@
             android:gravity="center"
             android:src="@drawable/ic_search"
             android:textColor="@android:color/white"
+            android:onClick="reloadUser"
             android:transitionName="@string/activity_transition"
-            app:layout_constraintBottom_toBottomOf="@id/username_input"
+            app:layout_constraintBottom_toBottomOf="@id/username_input_layout_tl"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/username_input"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
@@ -56,7 +63,7 @@
             app:imageUrl="@{timelineViewModel.user.photoUrl}"
             app:layout_constraintBottom_toTopOf="@id/tweet_list"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/username_input"
+            app:layout_constraintTop_toBottomOf="@id/username_input_layout_tl"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_launcher_background" />
 
@@ -77,7 +84,7 @@
             android:id="@+id/screen_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{timelineViewModel.user.screenName}"
+            android:text="@{timelineViewModel.user.screenName != null ? ('@' + timelineViewModel.user.screenName) : timelineViewModel.user.screenName}"
             app:layout_constraintBottom_toBottomOf="@id/user_photo"
             app:layout_constraintStart_toStartOf="@id/name"
             app:layout_constraintTop_toBottomOf="@id/name"
@@ -97,11 +104,24 @@
         <ProgressBar
             android:layout_width="@dimen/progressbar_size"
             android:layout_height="@dimen/progressbar_size"
-            android:visibility="@{timelineViewModel.loadingVisibility ? View.VISIBLE : View.GONE}"
+            android:visibility="@{timelineViewModel.loadingVisibility ? View.VISIBLE : View.GONE, default=gone}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tweet_list" />
+
+        <TextView
+            android:id="@+id/error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{timelineViewModel.errorMessage}"
+            android:textSize="@dimen/title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tweet_list"
+            tools:text="@string/error_connecting_server" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

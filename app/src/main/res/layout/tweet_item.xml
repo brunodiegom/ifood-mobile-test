@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="tweet"
             type="com.brunodiegom.tweetanalyzer.model.Tweet" />
@@ -37,7 +39,19 @@
             app:layout_constraintBottom_toBottomOf="@id/tweet_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tweet_text"
+            tools:ignore="ContentDescription"
             tools:src="@drawable/thinking" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="@dimen/clickable_item"
+            android:layout_height="@dimen/clickable_item"
+            android:padding="@dimen/small_padding"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tweet_icon"
+            app:layout_constraintEnd_toEndOf="@id/tweet_icon"
+            app:layout_constraintStart_toStartOf="@id/tweet_icon"
+            app:layout_constraintTop_toTopOf="@id/tweet_icon" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

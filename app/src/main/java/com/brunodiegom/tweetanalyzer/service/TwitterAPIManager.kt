@@ -20,7 +20,7 @@ class TwitterAPIManager(val context: Context) {
     /**
      * Instance of [TwitterAPIClient] used to request data.
      */
-    val api: TwitterAPIClient = createTwitterApi()
+    var api: TwitterAPIClient = createTwitterApi()
 
     /**
      * Controls [TwitterAPIClient] initialization.
@@ -92,6 +92,18 @@ class TwitterAPIManager(val context: Context) {
             .build()
 
         return retrofit.create(TwitterAPIClient::class.java)
+    }
+
+    /**
+     * Recreate client.
+     */
+    fun retryCreateClient() {
+        api = createTwitterApi()
+        if (token != null) {
+            listener?.onInitialize(true)
+        } else {
+            getToken()
+        }
     }
 
     /**

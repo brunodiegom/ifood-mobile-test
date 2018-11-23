@@ -4,23 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".view.activity.MainActivity">
 
-    <EditText
-        android:id="@+id/username_input"
-        android:layout_width="0dp"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/username_input_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/input_padding"
+        android:layout_marginTop="@dimen/progressbar_size"
         android:layout_marginEnd="@dimen/input_padding"
-        android:hint="@string/user_name"
-        android:inputType="textNoSuggestions"
-        android:singleLine="true"
+        app:errorEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/search_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:ignore="Autofill" />
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <EditText
+            android:id="@+id/username_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:inputType="textNoSuggestions"
+            android:singleLine="true"
+            tools:ignore="Autofill" />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/search_button"
@@ -31,11 +40,10 @@
         android:drawableEnd="@drawable/ic_search"
         android:onClick="searchUser"
         android:text="@string/search"
-        android:transitionName="@string/activity_transition"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/username_input"
-        app:layout_constraintStart_toStartOf="@id/username_input"
-        app:layout_constraintTop_toBottomOf="@+id/username_input" />
+        android:transitionName="@string/activity_transition"
+        app:layout_constraintEnd_toEndOf="@id/username_input_layout"
+        app:layout_constraintStart_toStartOf="@id/username_input_layout"
+        app:layout_constraintTop_toBottomOf="@+id/username_input_layout" />
 
 </android.support.constraint.ConstraintLayout>

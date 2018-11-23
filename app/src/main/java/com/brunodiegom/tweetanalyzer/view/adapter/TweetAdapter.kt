@@ -69,19 +69,24 @@ class TweetAdapter(private var tweets: List<Tweet>, private val googleApi: Googl
         }
 
         override fun onClick(v: View?) {
-            googleApi.analyzeSentiment(tweets[adapterPosition].text, EncodingType.PLAIN_TEXT).enqueue(sentimentCallback)
+            if (tweets[adapterPosition].sentimentIcon == 0) {
+                googleApi.analyzeSentiment(tweets[adapterPosition].text, EncodingType.PLAIN_TEXT)
+                    .enqueue(sentimentCallback)
+                binding.progressBar.visibility = View.VISIBLE
+            }
         }
 
         fun setSentiment(sentiment: SentimentResponse) {
             val score = sentiment.documentSentiment?.score
             Log.d(TAG, "Score: $score")
             when {
-                score == null -> tweets[adapterPosition].sentimentIcon = R.drawable.thinking
+                score == null -> tweets[adapterPosition].sentimentIcon = 0
                 score > 0.25 -> tweets[adapterPosition].sentimentIcon = R.drawable.happy
-                score > -0.75 -> tweets[adapterPosition].sentimentIcon = R.drawable.neutral
+                score > -0.25 -> tweets[adapterPosition].sentimentIcon = R.drawable.neutral
                 else -> tweets[adapterPosition].sentimentIcon = R.drawable.sad
             }
             binding.tweet = tweets[adapterPosition]
+            binding.progressBar.visibility = View.GONE
             binding.executePendingBindings()
         }
     }
